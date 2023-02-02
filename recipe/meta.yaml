@@ -38,7 +38,7 @@ test:
     - pip check
 
 about:
-  home: https://github.com/python-visualization/folium
+  home: https://python-visualization.github.io/folium/
   license: MIT
   license_family: MIT
   license_file: LICENSE.txt
