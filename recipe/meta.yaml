@@ -34,6 +34,10 @@ test:
     - folium
   requires:
     - pip
+
+    # workaround noarch bug in 3.10
+    - python <3.10
+
   commands:
     - pip check
 
@@ -60,3 +64,4 @@ extra:
   recipe-maintainers:
     - ocefpaf
     - BibMartin
+    - bkreider

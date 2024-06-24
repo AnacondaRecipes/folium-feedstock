@@ -1,0 +1,6 @@
+[submodule "folium-feedstock" ]
+    path = include/foo
+    branch = master
+	url = ../folium-feedstock
+
+
