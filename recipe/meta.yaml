@@ -1,26 +1,25 @@
 {% set name = "folium" %}
-{% set version = "0.14.0" %}
-
+{% set version = "0.20.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/folium-{{ version }}.tar.gz
-  sha256: 8ec44697d18f5932e0fdaee8b19da98625de4d0e72cb30ef56f9479f18e11b9f
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: a0d78b9d5a36ba7589ca9aedbd433e84e9fcab79cd6ac213adbcff922e454cb9
 
 build:
   number: 0
-  skip: True  # [py<35]
-  script: {{ PYTHON }} -m pip install . -vv --no-deps
+  skip: true  # [py<39]
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
-    - setuptools_scm
+    - setuptools >=41.2
+    - setuptools-scm
     - wheel
   run:
     - python
@@ -28,32 +27,47 @@ requirements:
     - jinja2 >=2.9
     - numpy
     - requests
+    - xyzservices
 
 test:
+  files:
+    - tests/test_smoke.py
   imports:
     - folium
+    - folium.elements
+    - folium.features
+    - folium.folium
+    - folium.map
+    - folium.plugins
+    - folium.raster_layers
+    - folium.template
+    - folium.utilities
+    - folium.vector_layers
   requires:
     - pip
+    - pytest
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -ra -vv tests/test_smoke.py
 
 about:
-  home: https://python-visualization.github.io/folium/
+  home: https://python-visualization.github.io/folium
   license: MIT
   license_family: MIT
   license_file: LICENSE.txt
   summary: Make beautiful maps with Leaflet.js and Python
   description: |
-    folium builds on the data wrangling strengths of the Python ecosystem 
-    and the mapping strengths of the leaflet.js library. 
+    folium builds on the data wrangling strengths of the Python ecosystem
+    and the mapping strengths of the leaflet.js library.
     Manipulate your data in Python, then visualize it in on a Leaflet map via folium.
-    folium makes it easy to visualize data that's been manipulated in Python on an interactive leaflet map. 
-    It enables both the binding of data to a map for choropleth visualizations 
+    folium makes it easy to visualize data that's been manipulated in Python on an interactive leaflet map.
+    It enables both the binding of data to a map for choropleth visualizations
     as well as passing rich vector/raster/HTML visualizations as markers on the map.
-    The library has a number of built-in tilesets from OpenStreetMap, Mapbox, and Stamen, 
-    and supports custom tilesets with Mapbox or Cloudmade API keys. 
+    The library has a number of built-in tilesets from OpenStreetMap, Mapbox, and Stamen,
+    and supports custom tilesets with Mapbox or Cloudmade API keys.
     folium supports both Image, Video, GeoJSON and TopoJSON overlays.
-  doc_url: https://python-visualization.github.io/folium/
+  doc_url: https://python-visualization.github.io/folium
   dev_url: https://github.com/python-visualization/folium
 
 extra:
