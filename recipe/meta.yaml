@@ -30,6 +30,8 @@ requirements:
     - xyzservices
 
 test:
+  files:
+    - tests/test_smoke.py
   imports:
     - folium
     - folium.elements
@@ -43,9 +45,11 @@ test:
     - folium.vector_layers
   requires:
     - pip
+    - pytest
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -ra -vv tests/test_smoke.py
 
 about:
   home: https://python-visualization.github.io/folium
